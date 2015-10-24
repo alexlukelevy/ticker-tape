@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet title="XSL_formatting" type="text/xsl" href="/shared/bsp/xsl/rss/nolsol.xsl"?>
+
+<rss xmlns:media="http://search.yahoo.com/mrss/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+  <channel>
+    <title>BBC News - Home</title>
+    <link>http://www.bbc.co.uk/news/#sa-ns_mchannel=rss&amp;ns_source=PublicRSS20-sa</link>
+    <description>The latest stories from the Home section of the BBC News web site.</description>
+    <language>en-gb</language>
+    <lastBuildDate>Sat, 24 Oct 2015 12:55:08 GMT</lastBuildDate>
+    <copyright>Copyright: (C) British Broadcasting Corporation, see http://news.bbc.co.uk/2/hi/help/rss/4498287.stm for terms and conditions of reuse.</copyright>
+    <image>
+      <url>http://news.bbcimg.co.uk/nol/shared/img/bbc_news_120x60.gif</url>
+      <title>BBC News - Home</title>
+      <link>http://www.bbc.co.uk/news/#sa-ns_mchannel=rss&amp;ns_source=PublicRSS20-sa</link>
+      <width>120</width>
+      <height>60</height>
+    </image>
+    <ttl>15</ttl>
+    <atom:link href="http://feeds.bbci.co.uk/news/rss.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Flood threat from storm Patricia</title>
+      <description>Hurricane Patricia weakens to a tropical storm but still poses a threat of floods and landslides, the US National Hurricane Centre says.</description>
+      <link>http://www.bbc.co.uk/news/world-latin-america-34625357#sa-ns_mchannel=rss&amp;ns_source=PublicRSS20-sa</link>
+      <guid isPermaLink="false">http://www.bbc.co.uk/news/world-latin-america-34625357</guid>
+      <pubDate>Sat, 24 Oct 2015 12:51:49 GMT</pubDate>
+    </item>
+    <item>
+      <title>VIDEO: The elite unit that saves downed pilots</title>
+      <description>A US military unit is based in the Middle East with the specific task of rescuing and extracting pilots who have been shot down over Islamic State-controlled territory.</description>
+      <link>http://www.bbc.co.uk/news/world-us-canada-34625511#sa-ns_mchannel=rss&amp;ns_source=PublicRSS20-sa</link>
+      <guid isPermaLink="false">http://www.bbc.co.uk/news/world-us-canada-34625511</guid>
+      <pubDate>Sat, 24 Oct 2015 08:03:20 GMT</pubDate>
+      <media:thumbnail width="66" height="49" url="http://c.files.bbci.co.uk/6E50/production/_86304282_86304073.jpg"/>
+      <media:thumbnail width="144" height="81" url="http://c.files.bbci.co.uk/9560/production/_86304283_86304073.jpg"/>
+    </item>
+    <item>
+      <title>Win-win on Britain's China gamble?</title>
+      <description>It was a week of wall-to-wall photo opportunities as British and Chinese governments heralded a "golden era" in relations - but will the UK's gamble pay off?</description>
+      <link>http://www.bbc.co.uk/news/uk-34626936#sa-ns_mchannel=rss&amp;ns_source=PublicRSS20-sa</link>
+      <guid isPermaLink="false">http://www.bbc.co.uk/news/uk-34626936</guid>
+      <pubDate>Sat, 24 Oct 2015 12:44:22 GMT</pubDate>
+      <media:thumbnail width="66" height="49" url="http://c.files.bbci.co.uk/C260/production/_86306794_029723326-1.jpg"/>
+      <media:thumbnail width="144" height="81" url="http://c.files.bbci.co.uk/E970/production/_86306795_029723326-1.jpg"/>
+    </item>
+  </channel>
+</rss>
