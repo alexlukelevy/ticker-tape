@@ -1,20 +1,28 @@
+from tickertape.reporter import Reporter
 from tickertape.feedhandler import *
 
-
-def setup():
-    print "SETUP!"
+from unittest.mock import MagicMock
 
 
-def teardown():
-    print "TEAR DOWN!"
-
-
-def test_bbc_news_events():
+def test_bbc_news_init():
     # Given
-    fh = BbcNewsFeedHandler('tests\\bbc_rss.xml')
+    r = Reporter()
+    r.register = MagicMock()
 
     # When
-    events = fh.events()
+    fh = BbcNewsFeedHandler(r, '')
+
+    # Then
+    r.register.assert_called_with(fh)
+
+
+def test_bbc_news_report():
+    # Given
+    r = Reporter()
+    fh = BbcNewsFeedHandler(r, 'tests\\bbc_rss.xml')
+
+    # When
+    events = fh.report()
 
     # Then
     # VIDEO: entries stripped out and content populated with RSS title
