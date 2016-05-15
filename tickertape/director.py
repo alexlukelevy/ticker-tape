@@ -11,10 +11,9 @@ class Director:
     """
 
     def __init__(self):
-        self.__reporter = Reporter(Tape())
-        #self.__reporter = Reporter(FakeTape())
-        self.__feed_handlers = [
-            BbcNewsFeedHandler(self.__reporter, 'http://feeds.bbci.co.uk/news/rss.xml')
+        self._reporter = Reporter(self, Tape())
+        self._feed_handlers = [
+            BbcNewsFeedHandler(self._reporter, 'http://feeds.bbci.co.uk/news/rss.xml')
         ]
 
     def action(self):
@@ -22,13 +21,19 @@ class Director:
         self.start_handler_threads()
 
     def start_reporter_thread(self):
-        t = Thread(target=self.__reporter.report)
+        t = Thread(target=self._reporter.report)
         t.start()
 
     def start_handler_threads(self):
-        for fh in self.__feed_handlers:
+        for fh in self._feed_handlers:
             t = Thread(target=fh.listen)
             t.start()
+
+    def rolling(self):
+        """
+        Run indefinitely.
+        """
+        return True
 
 
 if __name__ == '__main__':

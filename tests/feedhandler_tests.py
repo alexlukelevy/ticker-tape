@@ -1,32 +1,39 @@
-from tickertape.reporter import Reporter
+from mock import Mock, patch, call
 from tickertape.feedhandler import *
 
-from unittest.mock import MagicMock
 
-
-def test_bbc_news_init():
+@patch('__builtin__.print')
+def test_handler_publish(_print):
     # Given
-    r = Reporter()
-    r.register = MagicMock()
+    director = Mock()
+    reporter = Mock()
+    handler = FeedHandler(director, reporter)
+    event = FeedEvent('Item 1')
 
     # When
-    fh = BbcNewsFeedHandler(r, '')
+    handler.publish(event)
 
     # Then
-    r.register.assert_called_with(fh)
+    reporter.receive.assert_called_with(event)
+    _print.assert_called_with('FeedHandler raising event: Item 1')
 
-
-def test_bbc_news_report():
+@patch('time.sleep')
+@patch('__builtin__.print')
+def todo_test_bbc_news_handler(_print, sleep):
     # Given
-    r = Reporter()
-    fh = BbcNewsFeedHandler(r, 'tests\\bbc_rss.xml')
+    director = Mock()
+    reporter = Mock()
+    handler = BbcNewsFeedHandler(director, reporter, 'tests\\bbc_rss.xml')
+
+    director.rolling = Mock(side_effect=[True, False])
 
     # When
-    events = fh.report()
+    handler.listen()
 
     # Then
     # VIDEO: entries stripped out and content populated with RSS title
-    assert len(events) == 2
-    assert events[0].content == 'Flood threat from storm Patricia'
-    assert events[1].content == 'Win-win on Britain\'s China gamble?'
+    assert reporter.receive.call_count == 2
+    call1 = call(FeedEvent('Flood threat from storm Patricia'))
+    call2 = call(FeedEvent('Win-win on Britain\'s China gamble?'))
+    reporter.receive.assert_has_calls([call1, call2], any_order=False)
 

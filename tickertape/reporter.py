@@ -1,7 +1,8 @@
+from __future__ import print_function
 import time
 
 
-# TODO: add thread locking for __events
+# TODO: add thread locking for _events
 
 class Reporter:
     """
@@ -9,25 +10,26 @@ class Reporter:
     the order in which to publish FeedEvents.
     """
 
-    def __init__(self, tape):
-        self.__events = []
-        self.__tape = tape
+    def __init__(self, director, tape):
+        self._director = director
+        self._events = []
+        self._tape = tape
 
     def report(self):
-        while True:
+        while self._director.rolling():
             self.print_status()
-            for e in self.__events:
-                self.__tape.display(e.content)
+            for e in self._events:
+                self._tape.display(e.content)
 
-            self.__events = []
-            time.sleep(10)
+            self._events = []
+            time.sleep(60*5)
 
     def receive(self, event):
         print('Reporter receiving event: {}'.format(event))
-        self.__events.append(event)
+        self._events.append(event)
 
     def print_status(self):
-        if self.__events:
-            print('{0} new events received'.format(len(self.__events)))
+        if self._events:
+            print('{0} new events received'.format(len(self._events)))
         else:
             print('No new events received')
