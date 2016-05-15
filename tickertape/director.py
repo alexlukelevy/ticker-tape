@@ -1,8 +1,8 @@
-import time
+from threading import Thread
 
-from tickertape.feedhandler import *
-
-from tickertape.reporter import Reporter
+from feedhandler import *
+from reporter import Reporter
+from tape import *
 
 
 class Director:
@@ -11,16 +11,24 @@ class Director:
     """
 
     def __init__(self):
-        self.reporter = Reporter()
-        self.feed_handlers = [
-            BbcNewsFeedHandler(self.reporter, 'http://feeds.bbci.co.uk/news/rss.xml')
+        self.__reporter = Reporter(Tape())
+        #self.__reporter = Reporter(FakeTape())
+        self.__feed_handlers = [
+            BbcNewsFeedHandler(self.__reporter, 'http://feeds.bbci.co.uk/news/rss.xml')
         ]
 
     def action(self):
-        while True:
-            self.reporter.refresh()
-            self.reporter.publish()
-            time.sleep(10)
+        self.start_reporter_thread()
+        self.start_handler_threads()
+
+    def start_reporter_thread(self):
+        t = Thread(target=self.__reporter.report)
+        t.start()
+
+    def start_handler_threads(self):
+        for fh in self.__feed_handlers:
+            t = Thread(target=fh.listen)
+            t.start()
 
 
 if __name__ == '__main__':
