@@ -25,9 +25,9 @@ def test_display():
     tape.display(text)
 
     # Then
-    draw1 = call(canvas, font, 2, 10, color, text)
-    draw2 = call(canvas, font, 2, 10, color, text)
-    draw3 = call(canvas, font, 1, 10, color, text)
+    draw1 = call(canvas, font, 2, 12, color, text)
+    draw2 = call(canvas, font, 2, 12, color, text)
+    draw3 = call(canvas, font, 1, 12, color, text)
     draw.assert_has_calls([draw1, draw2, draw3], any_order=False)
     sleep.assert_has_calls([call(0.05), call(0.05)])
     assert canvas.Clear.call_count == 2

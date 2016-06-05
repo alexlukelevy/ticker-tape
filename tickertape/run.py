@@ -4,7 +4,7 @@ from rgbmatrix import RGBMatrix
 from feedhandler import *
 from reporter import Reporter
 from director import Director
-from tape import *
+from tape import Tape
 
 
 """
