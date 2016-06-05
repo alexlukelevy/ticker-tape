@@ -20,9 +20,13 @@ def test_action():
     director.action()
 
     # Then
-    reporter_call = call(refresh, reporter.report)
-    feed_handler_call = call(refresh, feed_handler.handle)
-    timer.assert_has_calls([reporter_call, feed_handler_call], any_order=False)
-
+    # scheduled call
+    reporter_call = call(refresh, director._start_timer, [reporter.report])
+    feed_handler_call = call(refresh, director._start_timer, [feed_handler.handle])
+    timer.assert_has_calls([feed_handler_call, reporter_call], any_order=False)
+    # start schedule
     reporter_timer.start.assert_called()
     feed_handler_timer.start.assert_called()
+    # initial synchronous call
+    reporter.report.assert_called()
+    feed_handler.handle.assert_called()

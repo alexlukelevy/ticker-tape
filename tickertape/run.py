@@ -25,5 +25,7 @@ if __name__ == '__main__':
         BbcNewsFeedHandler(reporter, 'http://feeds.bbci.co.uk/news/rss.xml')
     ]
 
-    director = Director(reporter, feed_handlers, 60)
+    director = Director(reporter, feed_handlers, 60*10)
     director.action()
+
+    raw_input('Press ENTER to shutdown\n')

@@ -13,11 +13,12 @@ class Director:
         self._timer = timer
 
     def action(self):
-        self._start_timer(self._reporter.report)
-
         for fh in self._feed_handlers:
             self._start_timer(fh.handle)
 
+        self._start_timer(self._reporter.report)
+
     def _start_timer(self, func):
-        t = self._timer(self._refresh, func)
-        t.start()
+        # reschedule every self._refresh seconds
+        self._timer(self._refresh, self._start_timer, [func]).start()
+        func()

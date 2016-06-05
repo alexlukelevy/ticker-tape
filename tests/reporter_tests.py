@@ -8,7 +8,8 @@ from tickertape.reporter import Reporter
 def test_report(_print):
     # Given
     tape = Mock()
-    reporter = Reporter(tape)
+    lock = Mock()
+    reporter = Reporter(tape, lock)
 
     reporter.receive(FeedEvent('Item 1'))
 
@@ -16,15 +17,18 @@ def test_report(_print):
     reporter.report()
 
     # Then
+    lock.acquire.assert_called()
     tape.display.assert_called_with('Item 1')
     _print.assert_called_with('1 new events received')
+    lock.release.assert_called()
 
 
 @patch('__builtin__.print')
 def test_receive_event(_print):
     # Given
     tape = Mock()
-    reporter = Reporter(tape)
+    lock = Mock()
+    reporter = Reporter(tape, lock)
     event = FeedEvent('Item 1')
 
     # When
@@ -32,8 +36,10 @@ def test_receive_event(_print):
 
     # Then
     # TODO: better assertion?
+    lock.acquire.assert_called()
     assert reporter._events[0] == event
     _print.assert_called_with('Reporter receiving event: Item 1')
+    lock.release.assert_called()
 
 
 @patch('__builtin__.print')
