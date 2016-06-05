@@ -1,6 +1,5 @@
 from __future__ import print_function
 import feedparser
-import time
 
 
 class FeedEvent:
@@ -20,37 +19,33 @@ class FeedEvent:
 
 class FeedHandler(object):
 
-    def __init__(self, director, reporter):
-        self._director = director
+    def __init__(self, reporter):
         self._reporter = reporter
+        self._rolling = False
 
     def publish(self, event):
-        self.print_publish(event)
+        self._print_publish(event)
         self._reporter.receive(event)
 
-    def print_publish(self, event):
+    def _print_publish(self, event):
         handler = self.__class__.__name__
         print('{0} raising event: {1}'.format(handler, event))
 
 
 class BbcNewsFeedHandler(FeedHandler):
 
-    def __init__(self, director, reporter, rss_url):
-        super(BbcNewsFeedHandler, self).__init__(director, reporter)
+    def __init__(self, reporter, rss_url):
+        super(BbcNewsFeedHandler, self).__init__(reporter)
         self._rss_url = rss_url
         self._event_log = []
 
-    def listen(self):
-        # indefinitely look for new headlines
-        while self._director.rolling():
-            rss = feedparser.parse(self._rss_url)
-            events = self.create_events(rss.entries[:10])
+    def handle(self):
+        rss = feedparser.parse(self._rss_url)
+        events = self.create_events(rss.entries[:10])
 
-            for e in events:
-                if e not in self._event_log:
-                    self.publish(e)
-
-            time.sleep(600)
+        for e in events:
+            if e not in self._event_log:
+                self.publish(e)
 
     def publish(self, event):
         super(BbcNewsFeedHandler, self).publish(event)

@@ -1,8 +1,4 @@
-from threading import Thread
-
-from feedhandler import *
-from reporter import Reporter
-from tape import *
+import threading
 
 
 class Director:
@@ -10,32 +6,18 @@ class Director:
     Coordinates the FeedHandlers and the Reporter
     """
 
-    def __init__(self):
-        self._reporter = Reporter(self, Tape())
-        self._feed_handlers = [
-            BbcNewsFeedHandler(self._reporter, 'http://feeds.bbci.co.uk/news/rss.xml')
-        ]
+    def __init__(self, reporter, feed_handlers, refresh, timer=threading.Timer):
+        self._reporter = reporter
+        self._feed_handlers = feed_handlers
+        self._refresh = refresh
+        self._timer = timer
 
     def action(self):
-        self.start_reporter_thread()
-        self.start_handler_threads()
+        self._start_timer(self._reporter.report)
 
-    def start_reporter_thread(self):
-        t = Thread(target=self._reporter.report)
-        t.start()
-
-    def start_handler_threads(self):
         for fh in self._feed_handlers:
-            t = Thread(target=fh.listen)
-            t.start()
+            self._start_timer(fh.handle)
 
-    def rolling(self):
-        """
-        Run indefinitely.
-        """
-        return True
-
-
-if __name__ == '__main__':
-    director = Director()
-    director.action()
+    def _start_timer(self, func):
+        t = self._timer(self._refresh, func)
+        t.start()

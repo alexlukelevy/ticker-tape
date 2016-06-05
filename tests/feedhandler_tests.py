@@ -5,9 +5,8 @@ from tickertape.feedhandler import *
 @patch('__builtin__.print')
 def test_handler_publish(_print):
     # Given
-    director = Mock()
     reporter = Mock()
-    handler = FeedHandler(director, reporter)
+    handler = FeedHandler(reporter)
     event = FeedEvent('Item 1')
 
     # When
@@ -17,18 +16,14 @@ def test_handler_publish(_print):
     reporter.receive.assert_called_with(event)
     _print.assert_called_with('FeedHandler raising event: Item 1')
 
-@patch('time.sleep')
-@patch('__builtin__.print')
-def todo_test_bbc_news_handler(_print, sleep):
-    # Given
-    director = Mock()
-    reporter = Mock()
-    handler = BbcNewsFeedHandler(director, reporter, 'tests\\bbc_rss.xml')
 
-    director.rolling = Mock(side_effect=[True, False])
+def test_bbc_news_handler():
+    # Given
+    reporter = Mock()
+    handler = BbcNewsFeedHandler(reporter, 'tests\\bbc_rss.xml')
 
     # When
-    handler.listen()
+    handler.handle()
 
     # Then
     # VIDEO: entries stripped out and content populated with RSS title

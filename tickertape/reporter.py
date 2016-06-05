@@ -10,19 +10,16 @@ class Reporter:
     the order in which to publish FeedEvents.
     """
 
-    def __init__(self, director, tape):
-        self._director = director
+    def __init__(self, tape):
         self._events = []
         self._tape = tape
 
     def report(self):
-        while self._director.rolling():
-            self.print_status()
-            for e in self._events:
-                self._tape.display(e.content)
+        self.print_status()
+        for e in self._events:
+            self._tape.display(e.content)
 
-            self._events = []
-            time.sleep(60*5)
+        self._events = []
 
     def receive(self, event):
         print('Reporter receiving event: {}'.format(event))
