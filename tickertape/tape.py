@@ -15,11 +15,11 @@ class Tape:
         print('Tape displaying: ' + text)
         canvas = self._offscreen_canvas
         pos = self._offscreen_canvas.width
-        len = self.draw_text(pos, 10, text)
+        len = self.draw_text(pos, 12, text)
 
         while pos + len > 0:
             canvas.Clear()
-            len = self.draw_text(pos, 10, text)
+            len = self.draw_text(pos, 12, text)
             pos -= 1
             self._sleep(0.05)
             self._offscreen_canvas = self._matrix.SwapOnVSync(canvas)
