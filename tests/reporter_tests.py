@@ -1,33 +1,71 @@
-from unittest.mock import Mock
-from feedhandler import FeedEvent
+from mock import Mock, patch
+from tickertape.feedhandler import FeedEvent
 
 from tickertape.reporter import Reporter
 
 
-def test_register():
+@patch('__builtin__.print')
+def test_report(_print):
     # Given
-    r = Reporter()
-    fh = Mock()
+    tape = Mock()
+    lock = Mock()
+    reporter = Reporter(tape, lock)
+
+    reporter.receive(FeedEvent('Item 1'))
 
     # When
-    r.register(fh)
+    reporter.report()
 
     # Then
-    assert r.feed_handlers[0] == fh
+    lock.acquire.assert_called()
+    tape.display.assert_called_with('Item 1')
+    _print.assert_called_with('1 new events received')
+    lock.release.assert_called()
 
 
-def test_refresh():
+@patch('__builtin__.print')
+def test_receive_event(_print):
     # Given
-    r = Reporter()
-    fh = Mock()
-
-    events = [FeedEvent('Item 1'), FeedEvent('Item 2')]
-    fh.report = Mock(return_value=events)
-
-    r.register(fh)
+    tape = Mock()
+    lock = Mock()
+    reporter = Reporter(tape, lock)
+    event = FeedEvent('Item 1')
 
     # When
-    r.refresh()
+    reporter.receive(event)
 
     # Then
-    assert r.events == events
+    # TODO: better assertion?
+    lock.acquire.assert_called()
+    assert reporter._events[0] == event
+    _print.assert_called_with('Reporter receiving event: Item 1')
+    lock.release.assert_called()
+
+
+@patch('__builtin__.print')
+def test_print_status_non_empty(_print):
+    # Given
+    tape = Mock()
+    reporter = Reporter(tape)
+
+    event = FeedEvent('Item 1')
+    reporter.receive(event)
+
+    # When
+    reporter.print_status()
+
+    # Then
+    _print.assert_called_with('1 new events received')
+
+
+@patch('__builtin__.print')
+def test_print_status_empty(_print):
+    # Given
+    tape = Mock()
+    reporter = Reporter(tape)
+
+    # When
+    reporter.print_status()
+
+    # Then
+    _print.assert_called_with('No new events received')
