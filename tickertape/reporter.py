@@ -18,7 +18,8 @@ class Reporter:
         try:
             self.print_status()
             for e in self._events:
-                self._tape.display(e.content)
+                for i in range(0, e.repeat):
+                    self._tape.display(e.content)
 
             self._events = []
         finally:

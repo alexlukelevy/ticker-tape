@@ -4,8 +4,9 @@ import feedparser
 
 class FeedEvent:
 
-    def __init__(self, content):
+    def __init__(self, content, repeat=0):
         self.content = content
+        self.repeat = repeat
 
     def __eq__(self, other):
         return isinstance(other, self.__class__) and self.content == other.content

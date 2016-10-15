@@ -11,7 +11,7 @@ def test_report(_print):
     lock = Mock()
     reporter = Reporter(tape, lock)
 
-    reporter.receive(FeedEvent('Item 1'))
+    reporter.receive(FeedEvent('Item 1', 2))
 
     # When
     reporter.report()
@@ -19,6 +19,7 @@ def test_report(_print):
     # Then
     lock.acquire.assert_called()
     tape.display.assert_called_with('Item 1')
+    assert tape.display.call_count == 2
     _print.assert_called_with('1 new events received')
     lock.release.assert_called()
 
