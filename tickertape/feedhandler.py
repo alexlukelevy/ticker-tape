@@ -4,12 +4,15 @@ import feedparser
 
 class FeedEvent:
 
-    def __init__(self, content, repeat=0):
+    def __init__(self, content, source, repeat=1):
         self.content = content
+        self.source = source
         self.repeat = repeat
 
     def __eq__(self, other):
-        return isinstance(other, self.__class__) and self.content == other.content
+        return isinstance(other, self.__class__)\
+            and self.content == other.content\
+            and self.source == self.source
 
     def __ne__(self, other):
         return not self.__eq__(other)
@@ -53,7 +56,7 @@ class BbcNewsFeedHandler(FeedHandler):
         self._event_log.append(event)
 
     def create_events(self, rss_entries):
-        return [FeedEvent(r.title) for r in rss_entries if self.is_valid_entry(r)]
+        return [FeedEvent(r.title, 'bbc') for r in rss_entries if self.is_valid_entry(r)]
 
     @staticmethod
     def is_valid_entry(entry):

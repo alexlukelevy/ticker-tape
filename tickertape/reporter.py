@@ -1,4 +1,5 @@
 from __future__ import print_function
+from collections import defaultdict, deque
 import threading
 
 
@@ -9,7 +10,7 @@ class Reporter:
     """
 
     def __init__(self, tape, lock=threading.Lock()):
-        self._events = []
+        self._events = defaultdict(lambda: deque(maxlen=5))
         self._tape = tape
         self._lock = lock
 
@@ -17,9 +18,10 @@ class Reporter:
         self._lock.acquire()
         try:
             self.print_status()
-            for e in self._events:
-                for i in range(0, e.repeat):
-                    self._tape.display(e.content)
+            for source, events in self._events.items():
+                for e in events:
+                    for i in range(0, e.repeat):
+                        self._tape.display(e.content)
 
             self._events = []
         finally:
@@ -29,7 +31,7 @@ class Reporter:
         self._lock.acquire()
         try:
             print('Reporter receiving event: {}'.format(event))
-            self._events.append(event)
+            self._events[event.source].append(event)
         finally:
             self._lock.release()
 
