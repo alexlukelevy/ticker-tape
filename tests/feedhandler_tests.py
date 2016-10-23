@@ -7,7 +7,7 @@ def test_handler_publish(_print):
     # Given
     reporter = Mock()
     handler = FeedHandler(reporter)
-    event = FeedEvent('Item 1')
+    event = FeedEvent('Item 1', 'source')
 
     # When
     handler.publish(event)
@@ -28,7 +28,7 @@ def test_bbc_news_handler():
     # Then
     # VIDEO: entries stripped out and content populated with RSS title
     assert reporter.receive.call_count == 2
-    call1 = call(FeedEvent('Flood threat from storm Patricia'))
-    call2 = call(FeedEvent('Win-win on Britain\'s China gamble?'))
+    call1 = call(FeedEvent('Flood threat from storm Patricia', 'bbc'))
+    call2 = call(FeedEvent('Win-win on Britain\'s China gamble?', 'bbc'))
     reporter.receive.assert_has_calls([call1, call2], any_order=False)
 

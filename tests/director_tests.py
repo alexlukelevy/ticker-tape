@@ -1,4 +1,5 @@
-from mock import Mock, call
+from mock import Mock
+import time
 
 from tickertape.director import Director
 
@@ -7,26 +8,39 @@ def test_action():
     # Given
     reporter = Mock()
     feed_handler = Mock()
-    refresh = 30
+    refresh = 0.5
 
-    reporter_timer = Mock()
-    feed_handler_timer = Mock()
-
-    timer = Mock(side_effect=[reporter_timer, feed_handler_timer])
-
-    director = Director(reporter, [feed_handler], refresh, timer)
+    director = Director(reporter, [feed_handler], refresh)
 
     # When
     director.action()
 
     # Then
-    # scheduled call
-    reporter_call = call(refresh, director._start_timer, [reporter.report])
-    feed_handler_call = call(refresh, director._start_timer, [feed_handler.handle])
-    timer.assert_has_calls([feed_handler_call, reporter_call], any_order=False)
-    # start schedule
-    reporter_timer.start.assert_called()
-    feed_handler_timer.start.assert_called()
-    # initial synchronous call
-    reporter.report.assert_called()
+    time.sleep(1)
+    director.cut()
+
     feed_handler.handle.assert_called()
+    reporter.report.assert_called()
+
+
+def test_cut():
+    # Given
+    reporter = Mock()
+    feed_handler = Mock()
+    refresh = 0.5
+
+    director = Director(reporter, [feed_handler], refresh)
+    director.action()
+
+    # When
+    director.cut()
+
+    # Then
+    feed_handler.handle.reset_mock()
+    reporter.report.reset_mock()
+
+    time.sleep(1)
+
+    feed_handler.handle.assert_not_called()
+    reporter.report.assert_not_called()
+

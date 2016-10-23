@@ -1,4 +1,4 @@
-from mock import Mock, patch
+from mock import Mock, patch, call
 from tickertape.feedhandler import FeedEvent
 
 from tickertape.reporter import Reporter
@@ -11,7 +11,7 @@ def test_report(_print):
     lock = Mock()
     reporter = Reporter(tape, lock)
 
-    reporter.receive(FeedEvent('Item 1'))
+    reporter.receive(FeedEvent('Item 1', 'bbc', 2))
 
     # When
     reporter.report()
@@ -19,7 +19,11 @@ def test_report(_print):
     # Then
     lock.acquire.assert_called()
     tape.display.assert_called_with('Item 1')
-    _print.assert_called_with('1 new events received')
+    assert tape.display.call_count == 2
+    _print.assert_has_calls([
+        call('Reporting on latest events'),
+        call('Reporting for bbc')
+    ])
     lock.release.assert_called()
 
 
@@ -29,43 +33,38 @@ def test_receive_event(_print):
     tape = Mock()
     lock = Mock()
     reporter = Reporter(tape, lock)
-    event = FeedEvent('Item 1')
+    event = FeedEvent('Item 1', 'bbc')
 
     # When
     reporter.receive(event)
 
     # Then
-    # TODO: better assertion?
     lock.acquire.assert_called()
-    assert reporter._events[0] == event
     _print.assert_called_with('Reporter receiving event: Item 1')
     lock.release.assert_called()
 
 
-@patch('__builtin__.print')
-def test_print_status_non_empty(_print):
+def test_receive_event_and_report():
     # Given
     tape = Mock()
     reporter = Reporter(tape)
 
-    event = FeedEvent('Item 1')
-    reporter.receive(event)
+    reporter.receive(FeedEvent('Item 1', 'bbc'))
+    reporter.receive(FeedEvent('Item 2', 'bbc'))
+    reporter.receive(FeedEvent('Item 3', 'bbc'))
+    reporter.receive(FeedEvent('Item 4', 'bbc'))
+    reporter.receive(FeedEvent('Item 5', 'bbc'))
+    reporter.receive(FeedEvent('Item 6', 'bbc'))
 
     # When
-    reporter.print_status()
+    reporter.report()
 
     # Then
-    _print.assert_called_with('1 new events received')
-
-
-@patch('__builtin__.print')
-def test_print_status_empty(_print):
-    # Given
-    tape = Mock()
-    reporter = Reporter(tape)
-
-    # When
-    reporter.print_status()
-
-    # Then
-    _print.assert_called_with('No new events received')
+    assert tape.display.call_count == 5
+    tape.display.assert_has_calls([
+        call('Item 2'),
+        call('Item 3'),
+        call('Item 4'),
+        call('Item 5'),
+        call('Item 6')
+    ])
