@@ -45,7 +45,7 @@ class BbcNewsFeedHandler(FeedHandler):
 
     def handle(self):
         rss = feedparser.parse(self._rss_url)
-        events = self.create_events(rss.entries[:10])
+        events = self.create_events(rss.entries[:5])
 
         for e in events:
             if e not in self._event_log:

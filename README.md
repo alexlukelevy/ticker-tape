@@ -6,5 +6,5 @@ This library makes use of the Raspberry Pi LED matrix [project](https://github.c
 ## Running
 
 ```
-sudo python run.py
+$ sudo python run.py
 ```

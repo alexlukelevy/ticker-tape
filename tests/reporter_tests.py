@@ -20,7 +20,10 @@ def test_report(_print):
     lock.acquire.assert_called()
     tape.display.assert_called_with('Item 1')
     assert tape.display.call_count == 2
-    _print.assert_called_with('1 new events received')
+    _print.assert_has_calls([
+        call('Reporting on latest events'),
+        call('Reporting for bbc')
+    ])
     lock.release.assert_called()
 
 
@@ -39,6 +42,7 @@ def test_receive_event(_print):
     lock.acquire.assert_called()
     _print.assert_called_with('Reporter receiving event: Item 1')
     lock.release.assert_called()
+
 
 def test_receive_event_and_report():
     # Given
@@ -64,32 +68,3 @@ def test_receive_event_and_report():
         call('Item 5'),
         call('Item 6')
     ])
-
-
-@patch('__builtin__.print')
-def test_print_status_non_empty(_print):
-    # Given
-    tape = Mock()
-    reporter = Reporter(tape)
-
-    event = FeedEvent('Item 1', 'bbc')
-    reporter.receive(event)
-
-    # When
-    reporter.print_status()
-
-    # Then
-    _print.assert_called_with('1 new events received')
-
-
-@patch('__builtin__.print')
-def test_print_status_empty(_print):
-    # Given
-    tape = Mock()
-    reporter = Reporter(tape)
-
-    # When
-    reporter.print_status()
-
-    # Then
-    _print.assert_called_with('No new events received')
