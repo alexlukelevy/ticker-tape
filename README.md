@@ -22,7 +22,7 @@ This library makes use of the Raspberry Pi LED matrix [project](https://github.c
 Please follow the wiring instructions found on that project to configure the LED matrix appropriately.
 
 ## Running
-To run TickerTape 
+To run TickerTape, execute the following from **within the `tickertape` directory**
 
 ```
 $ sudo python tickertape.py
