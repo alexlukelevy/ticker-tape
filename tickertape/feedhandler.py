@@ -1,4 +1,5 @@
 from __future__ import print_function
+from collections import deque
 import feedparser
 
 
@@ -41,7 +42,7 @@ class BbcNewsFeedHandler(FeedHandler):
     def __init__(self, reporter, rss_url):
         super(BbcNewsFeedHandler, self).__init__(reporter)
         self._rss_url = rss_url
-        self._event_log = []
+        self._event_log = deque(maxlen=50)
 
     def handle(self):
         rss = feedparser.parse(self._rss_url)
