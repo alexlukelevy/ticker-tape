@@ -17,16 +17,17 @@ class Director:
         self._runtime = runtime
         self._refresh = refresh
         self._airing = False
+        self._timer = None
         self._threads = []
 
     def action(self):
         self._airing = True
 
+        self._timer = threading.Timer(self._runtime, self.cut)
+        self._timer.start()
+
         reporter_thread = threading.Thread(target=self._repeat, args=(self._reporter.report,))
         self._threads.append(reporter_thread)
-
-        timer_thread = threading.Timer(self._runtime, self.cut)
-        self._threads.append(timer_thread)
 
         for fh in self._feed_handlers:
             fh_thread = threading.Thread(target=self._repeat, args=(fh.handle, self._refresh))
@@ -37,6 +38,8 @@ class Director:
 
     def cut(self):
         self._airing = False
+        self._timer.cancel()
+        self._timer = None
         for thread in self._threads:
             thread.join()
         self._threads = []

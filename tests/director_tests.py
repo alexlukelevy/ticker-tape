@@ -8,16 +8,16 @@ def test_action():
     # Given
     reporter = Mock()
     feed_handler = Mock()
+    runtime = 1
     refresh = 0.5
 
-    director = Director(reporter, [feed_handler], refresh)
+    director = Director(reporter, [feed_handler], runtime, refresh)
 
     # When
     director.action()
 
     # Then
     time.sleep(1)
-    director.cut()
 
     feed_handler.handle.assert_called()
     reporter.report.assert_called()
@@ -27,9 +27,10 @@ def test_cut():
     # Given
     reporter = Mock()
     feed_handler = Mock()
+    runtime = 10
     refresh = 0.5
 
-    director = Director(reporter, [feed_handler], refresh)
+    director = Director(reporter, [feed_handler], runtime, refresh)
     director.action()
 
     # When
