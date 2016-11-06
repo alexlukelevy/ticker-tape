@@ -17,7 +17,7 @@ class Reporter:
     def report(self):
         self._lock.acquire()
         try:
-            print('Reporting on latest events')
+#            print('Reporting on latest events')
             for source, events in self._events.items():
                 print('Reporting for ' + source)
                 for e in events:

@@ -29,6 +29,7 @@ class Director:
         print('TickerTape started')
 
     def cut(self):
+	print('YOLO')
         self._airing = False
         self._timer.cancel()
         self._timer = None
@@ -38,6 +39,7 @@ class Director:
         print('TickerTape stopped')
 
     def _start_timer(self):
+	print('timer seconds {}'.format(self._runtime))
         self._timer = threading.Timer(self._runtime, self.cut)
         self._timer.start()
 

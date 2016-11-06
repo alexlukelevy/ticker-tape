@@ -15,12 +15,14 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='TickerTape')
     parser.add_argument(
         '--runtime',
+	type=int,
         dest='runtime',
         default=0,
         help='minutes to run (default: 0 - infinite)'
     )
     parser.add_argument(
         '--refresh',
+	type=int,
         dest='refresh',
         default=5,
         help='minutes between FeedHandler refreshes (default: 5 )'
