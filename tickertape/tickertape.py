@@ -14,14 +14,12 @@ Configure DI and start tickertape
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='TickerTape')
     parser.add_argument(
-        '-m',
         '--runtime',
         dest='runtime',
         default=0,
         help='minutes to run (default: 0 - infinite)'
     )
     parser.add_argument(
-        '-r',
         '--refresh',
         dest='refresh',
         default=5,
