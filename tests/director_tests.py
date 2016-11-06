@@ -1,10 +1,11 @@
-from mock import Mock
+from mock import Mock, patch, call
 import time
 
 from tickertape.director import Director
 
 
-def test_action():
+@patch('__builtin__.print')
+def test_action(_print):
     # Given
     reporter = Mock()
     feed_handler = Mock()
@@ -21,9 +22,14 @@ def test_action():
 
     feed_handler.handle.assert_called()
     reporter.report.assert_called()
+    _print.assert_has_calls([
+        call('TickerTape starting up'),
+        call('TickerTape started')
+    ])
 
 
-def test_cut():
+@patch('__builtin__.print')
+def test_cut(_print):
     # Given
     reporter = Mock()
     feed_handler = Mock()
@@ -44,4 +50,8 @@ def test_cut():
 
     feed_handler.handle.assert_not_called()
     reporter.report.assert_not_called()
+    _print.assert_has_calls([
+        call('TickerTape shutting down'),
+        call('TickerTape stopped')
+    ])
 

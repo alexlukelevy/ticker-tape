@@ -47,5 +47,3 @@ if __name__ == '__main__':
 
     director = Director(reporter, feed_handlers, args.runtime * 60, args.refresh * 60)
     director.action()
-
-    raw_input('Press ENTER to shutdown\n')

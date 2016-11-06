@@ -22,6 +22,7 @@ class Director:
         self._threads = []
 
     def action(self):
+        print('TickerTape starting up')
         self._airing = True
         self._start_timer()
         self._start_reporter()
@@ -29,7 +30,7 @@ class Director:
         print('TickerTape started')
 
     def cut(self):
-	print('YOLO')
+        print('TickerTape shutting down')
         self._airing = False
         self._timer.cancel()
         self._timer = None
@@ -39,7 +40,6 @@ class Director:
         print('TickerTape stopped')
 
     def _start_timer(self):
-	print('timer seconds {}'.format(self._runtime))
         self._timer = threading.Timer(self._runtime, self.cut)
         self._timer.start()
 

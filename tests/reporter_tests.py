@@ -20,10 +20,7 @@ def test_report(_print):
     lock.acquire.assert_called()
     tape.display.assert_called_with('Item 1')
     assert tape.display.call_count == 2
-    _print.assert_has_calls([
-        call('Reporting on latest events'),
-        call('Reporting for bbc')
-    ])
+    _print.assert_called_with('Reporting for bbc')
     lock.release.assert_called()
 
 
