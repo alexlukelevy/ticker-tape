@@ -27,8 +27,8 @@ if __name__ == '__main__':
     )
     args = parser.parse_args()
 
-    print('TickerTape configured to run for {} minutes, refreshing FeedHandlers'
-          'every {} minutes', args.runtime, args.refresh)
+    print('TickerTape configured to run for {} minutes, refreshing FeedHandlers '
+          'every {} minutes'.format(args.runtime, args.refresh))
 
     matrix = RGBMatrix(16, 1, 1)
     color = graphics.Color(255, 255, 0)
