@@ -1,5 +1,6 @@
 from __future__ import print_function
 import os
+import sys
 import argparse
 from rgbmatrix import graphics
 from rgbmatrix import RGBMatrix
@@ -30,6 +31,10 @@ if __name__ == '__main__':
     )
     args = parser.parse_args()
 
+    # Zero is indefinite
+    runtime = (args.runtime if args.runtime != 0 else sys.maxsize) * 60
+    refresh = args.refresh * 60
+
     print('TickerTape configured to run for {} minutes, refreshing FeedHandlers '
           'every {} minutes'.format(args.runtime, args.refresh))
 
@@ -47,5 +52,5 @@ if __name__ == '__main__':
         BbcNewsFeedHandler(reporter, 'http://feeds.bbci.co.uk/news/rss.xml')
     ]
 
-    director = Director(reporter, feed_handlers, args.runtime * 60, args.refresh * 60)
+    director = Director(reporter, feed_handlers, runtime, refresh)
     director.action()
