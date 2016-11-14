@@ -1,4 +1,5 @@
 from __future__ import print_function
+import os
 import argparse
 from rgbmatrix import graphics
 from rgbmatrix import RGBMatrix
@@ -35,7 +36,8 @@ if __name__ == '__main__':
     matrix = RGBMatrix(16, 1, 1)
     color = graphics.Color(255, 255, 0)
     font = graphics.Font()
-    font.LoadFont('../fonts/7x13.bdf')
+    font_path = os.path.join(os.path.dirname(__file__), '../fonts/7x13.bdf')
+    font.LoadFont(font_path)
     draw = graphics.DrawText
     tape = Tape(matrix, color, font, draw)
 
