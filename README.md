@@ -2,7 +2,7 @@
 A Python library for Raspberry Pi that aggregates news from various sources and publishes them to a rolling LED ticker tape.
 
 ## Setup
-To get started you will need to first ensure you have a Python 2.7 and then install the following python libraries:
+To get started you will need to first ensure you have Python 2.7 and then install the following python libraries:
 * [feedparser](https://pypi.python.org/pypi/feedparser)
 * [rpi-rgb-led-matrix](https://github.com/hzeller/rpi-rgb-led-matrix/tree/master/python)
 
